@@ -1,0 +1,532 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<!--begin::Head-->
+<head>
+    <base href="">
+    <meta charset="utf-8" />
+    <title>PayWise | Login</title>
+    <meta name="description" content="Login page example" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="canonical" href="" />
+    <script>
+        var siteLocation = window.location.href.split('/').slice(0, 3).join('/') + "/";
+    </script>
+    <style>
+        :root {
+            --primary: #004D73 !important;
+            --secondary: #0182A1 !important;
+        }
+    </style>
+
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Page Custom Styles(used by this page)-->
+    <link href="/assets/css/pages/login/classic/login-5.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Custom Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/custom/lottie/lottie.css" rel="stylesheet" type="text/css" />
+    <!--end::Global Theme Styles-->
+    <!--begin::Layout Themes(used by all pages)-->
+    <!--end::Layout Themes-->
+    
+    <style>
+        .nivel1 {
+            font-weight: bold;
+        }
+
+        .nivel2 {
+            padding-left: 1em;
+        }
+
+        .holderFormGroup {
+            display: flex;
+        }
+
+        .holderFormGroup .modal-header {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .holderFormGroup .select2 {
+            padding: 20px;
+        }
+
+        .holderFormGroup .modal-footer {
+            justify-content: end;
+        }
+
+        .field-validation-error {
+            color: #0182A1 !important;
+        }
+
+        .sessionExp, .notificationAlert {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .notificationAlert {
+            flex-direction: column;    
+        }
+        
+        .notificationAlert > img {
+            width: 100%;
+            max-width: 27rem;
+        }
+
+        .sessionExp-content, .notificationAlert-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            color: black;
+        }
+        
+        .notificationAlert-content {
+            max-width: 27rem;
+            color: #00567C;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .notificationAlert-content > .message {
+            max-width: 27rem;
+        }
+        
+        .notificationAlert-content > .message > .contact {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .notificationAlert-content > h5 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff4015
+        }
+    </style>
+
+    <link rel="shortcut icon" href="https://stasmartpayprdeus201.blob.core.windows.net/files/PayWise_01.jpg" />
+</head>
+<!--end::Head-->
+<!--begin::Body-->
+<body id="kt_body" style="background-color:var(--primary);" class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading">
+
+    <div class="m-page-loader m-page-loader--base">
+        <div class="lottie-loader2" id="layout" style="display:none"> </div>
+    </div>
+        
+    <!--begin::Main-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Login-->
+        <div class="login login-5 login-signin-on d-flex flex-row-fluid" id="kt_login">
+            <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" style="background-image: url(https://stasmartpayprdeus201.blob.core.windows.net/files/PayWise_Fondo_login.png);">
+                <div class="login-form text-center text-white p-7 position-relative overflow-hidden">
+                    <!--begin::Login Header-->
+                    <div class="d-flex flex-center">
+                        <a href="#">
+                            <img src="https://stasmartpayprdeus201.blob.core.windows.net/files/PayWise_03.png" class="max-h-75px m-3" alt="" />
+                        </a>
+                        
+                    </div>
+                    <div class="d-flex flex-center mb-5">
+
+                            <img class="h-25px w-25px rounded-sm" src="/assets/media/svg/flags/021-mexico.svg" alt="" />
+                    </div>
+                    <!--end::Login Header-->
+                    <!--begin::Login Sign in form-->
+
+                    
+
+
+    <script>
+        const isLoginRecaptchaEnabled = true;
+    </script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<div id="sessionExpired" class="sessionExp">
+    <div class="sessionExp-content">
+        <p>Por seguridad, tu sesión ha expirado</p>
+        <p>Vuelve a iniciar sesión</p>
+        <button id="sessionExpBtn" class="btn btn-pill btn-secondary">ACEPTAR</button>
+    </div>
+</div>
+
+<div class="login-signin">
+    <div class="mb-20">
+        <h3 class="opacity-40 font-weight-normal">Backoffice</h3>
+        <p class="opacity-40">Ingresa tus datos para iniciar sesi&#xF3;n:</p>
+    </div>
+    <form id="account" method="post" data-ajax="true">
+        <input asp-asp-for="Input.IsPostBack" value="true" hidden />
+        <input value="Paywise" hidden type="text" id="Input_AliasOrganizacon" name="Input.AliasOrganizacon" />
+        <input value="" hidden type="text" id="Input_Token" name="Input.Token" />
+        <div class="form-group">
+            <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text" placeholder="Usuario" autocomplete="off" data-val-required="El campo usuario es requerido" data-val="true" id="Input_UserName" name="Input.UserName" value="" />
+            <span class="text-danger text-right field-validation-valid" data-valmsg-for="Input.UserName" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group">
+            <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="password" placeholder="Contrase&#xF1;a" data-val-required="La contrase&#xF1;a es incorrecta." data-val="true" id="Input_Password" name="Input.Password" />
+            <span class="text-danger text-right field-validation-valid" data-valmsg-for="Input.Password" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="modal fade" id="HoldersUserModal" tabindex="-1" role="dialog" aria-labelledby="HoldersUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content holderFormGroup">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="HoldersUserModalLabel">Selecciona una cuenta</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <select class="form-control select2" placeholder="Holders" data-val-required="Debe seleccionar un holder" data-val="true" id="Input_IdHolder" name="Input.IdHolder"></select>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <!-- Add any other buttons if needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="notificationAlert" class="notificationAlert p-12">
+            <div class="notificationAlert-content">
+                <h5>PROTÉGETE DEL FRAUDE</h5>
+                <div class="message mt-5">
+                    <p>NUNCA compartas tus datos por correo, mensaje o llamada.</p>
+                    <p>Recuerda que nuestros únicos medios de contacto son:</p>
+                    <p class="contact">LLamadas: 55 11 63 8753</p>
+                    <p class="contact">Whatsapp: &#x2B;52 1 981 134 6782</p>
+                    <p class="contact mb-5">Correo: soporte@paywise.mx</p>
+                    <p class="mb-5">Si recibes una llamada o mensaje de alguien haciéndose pasar por integrante de nuestro equipo o algo te parece sospechoso, cuelga o no contestes y contáctanos tú por alguno de los medios arriba señalados.</p>
+                    <p class="mb-5">Tu información es la vía de entrada a tu banca, no compartas bajo ninguna circunstancia tu información ni códigos de acceso.</p>
+                    <p class="mb-5">Para nosotros tu seguridad es lo más importante, ayúdanos a cuidarte.</p>
+                    <button id="notificationAlertBtn" class="btn btn-pill btn-secondary">ACEPTAR</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group d-flex flex-wrap justify-content-between align-items-center px-8 opacity-60">
+            <div class="checkbox-inline">
+                <label class="checkbox checkbox-outline checkbox-white text-white m-0">
+                    <input type="checkbox" data-val="true" data-val-required="The RememberMe field is required." id="Input_RememberMe" name="Input.RememberMe" value="true" />
+                    <span></span>Recordarme
+                </label>
+            </div>
+            <a class="text-white font-weight-bold" href="/Identity/Account/ForgotPassword?Organizacion=Paywise">&#xBF;Olvidaste tu contrase&#xF1;a?</a>
+        </div>
+        <div class="form-group text-center mt-10">
+            <button type="submit"
+                class="btn btn-pill btn-secondary">Ingresar</button>
+        </div>
+            <div class="form-group text-center mt-10 captcha-wrapper" style="display: none;">
+                <div class='g-recaptcha' data-sitekey='6LcWP9cpAAAAAEz7BS_tC85xX_BpGuDVr1QVX11h' data-callback='enableButton'></div>
+            </div>
+        <div class="form-group">
+            <span class="text-danger text-right h4 field-validation-valid" data-valmsg-for="Input.Error" data-valmsg-replace="true"></span>
+        </div>
+    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Cpc04sDt1JEnjt4u76agC3-2AbKqLUGAvrrHyXXWOrD3-lfQuZdCzPRrYv4M1oRtkXhtMEHlhVzthgLODn_jrGhQhpBGu7JiJ1d-icNY6N3HLaeIx6IfF6X6QIG8jr6Nrj9a1Igrp3LAguoPN6z6T8" /><input name="Input.RememberMe" type="hidden" value="false" /></form>
+    <div id="message"></div>
+</div>
+
+<!-- Modal-->
+<div style="z-index: 2000" class="modal fade" id="modalRegistroToken" tabindex="-1" role="dialog" aria-labelledby="modalRegistroToken"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="ModalBodyRegistroToken">
+                <div id="body-modal-token" class="d-flex flex-column-fluid">
+                    <div class="container">
+                        <div>
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label id="label-token" class="col-md-12 col-sm-12 col-lg-12 col-12 col-form-label">Ingresa el token que recibiste</label>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <input type="password" class="form-control form-control-lg form-control-solid" id="transaction-token" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="#" id="btnReenviarToken" class="btn btn-link">Reenviar token</a>
+                        </div>
+                        <p id="info-message"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary font-weight-bold" id="btnCerrarModalRegistroToken"
+                        data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary font-weight-bold"
+                        id="btnGuardarModalRegistroToken">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        $(document).ready(function () {
+            const showCaptcha = () => {
+                $(".captcha-wrapper").show();
+                //disable submit button
+                $('button[type="submit"]').prop("disabled", true);
+            };
+
+            var failedAttempts = parseInt(getCookie("FailedAttempts"));
+            if (failedAttempts > 0) {
+                showCaptcha();
+            }
+        });
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="/js/site_captcha.js"></script>
+
+                    <!--end::Login Sign in form-->
+
+                </div>
+            </div>
+        </div>
+        <!--end::Login-->
+    </div>
+    <!--end::Main-->
+    <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
+
+    <!--begin::Global Config(global config for global JS scripts)-->
+    <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#6993FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#F3F6F9", "dark": "#212121" }, "light": { "white": "#ffffff", "primary": "#E1E9FF", "secondary": "#ECF0F3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#212121", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#ECF0F3", "gray-300": "#E5EAEE", "gray-400": "#D6D6E0", "gray-500": "#B5B5C3", "gray-600": "#80808F", "gray-700": "#464E5F", "gray-800": "#1B283F", "gray-900": "#212121" } }, "font-family": "Poppins" };</script>
+    <!--end::Global Config-->
+    <!--begin::Global Theme Bundle(used by all pages)-->
+    <script>var lottieJson = '/'</script>
+    <script src="/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="/assets/js/scripts.bundle.js"></script>
+    <script src="/assets/plugins/custom/lottie/lottie.js" type="text/javascript"></script>
+    <script src="/assets/plugins/custom/lottie/ScriptLottie.js"></script>
+    <script src="/js/site_login.js?v=O6hO6Vg8M7kUh37d1UMeL0cP49JPE1SB7DV_Umij-pQ"></script>
+    <!--end::Global Theme Bundle-->
+    <!--begin::Page Scripts(used by this page)-->
+    
+    
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js" crossorigin="anonymous" integrity="sha384-rZfj/ogBloos6wzLGpPkkOr/gpkBNLZ6b6yLy4o+ok+t/SAKlL5mvXLr0OXNi1Hp">
+    </script>
+<script>(window.jQuery && window.jQuery.validator||document.write("\u003Cscript src=\u0022/Identity/lib/jquery-validation/dist/jquery.validate.min.js\u0022 crossorigin=\u0022anonymous\u0022 integrity=\u0022sha384-rZfj/ogBloos6wzLGpPkkOr/gpkBNLZ6b6yLy4o\u002Bok\u002Bt/SAKlL5mvXLr0OXNi1Hp\u0022\u003E\u003C/script\u003E"));</script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.9/jquery.validate.unobtrusive.min.js" crossorigin="anonymous" integrity="sha384-ifv0TYDWxBHzvAk2Z0n8R434FL1Rlv/Av18DXE43N/1rvHyOG4izKst0f2iSLdds">
+    </script>
+<script>(window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive||document.write("\u003Cscript src=\u0022/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js\u0022 crossorigin=\u0022anonymous\u0022 integrity=\u0022sha384-ifv0TYDWxBHzvAk2Z0n8R434FL1Rlv/Av18DXE43N/1rvHyOG4izKst0f2iSLdds\u0022\u003E\u003C/script\u003E"));</script>
+
+
+    <script type="text/javascript">
+        var isSessionValid = 'False'.toLowerCase() === 'true';
+        $(document).ready(function () {
+
+            const modal = document.getElementById('sessionExpired');
+            const closeButton = document.getElementById('sessionExpBtn');
+            const notificationModal = document.getElementById('notificationAlert');
+            const notificationCloseButton = document.getElementById('notificationAlertBtn');
+            notificationModal.style.display = 'flex';
+
+            if (!isSessionValid) {
+                modal.style.display = 'flex';
+            }
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            let userId = null;
+            
+            notificationCloseButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                notificationModal.style.display = 'none';
+            });
+
+            $('#Input_IdHolder').select2({
+
+                placeholder: "Seleccionar...",
+                templateResult: function (data) {
+                    if (!data.element) {
+                        return data.text;
+                    }
+                    var $element = $(data.element);
+                    var $wrapper = $('<span></span>');
+                    $wrapper.addClass($element[0].className);
+                    $wrapper.text(data.text);
+                    return $wrapper;
+                }
+            });
+
+            $("#btnGuardarModalRegistroToken").click((e) => {
+                e.preventDefault(); // Prevent the default form submission
+                $("#modalRegistroToken").modal("hide");
+                const token = $("#transaction-token").val();
+                $("#Input_Token").val(`${token}`);
+                $("#transaction-token").val("");
+                getHolders();
+            });
+
+            $("#btnReenviarToken").click(function (e) {
+                resendToken()
+            });
+            
+            function validateToken() {
+                $("#modalRegistroToken").modal("show");
+                
+            }
+            
+            function resendToken() {
+                $.ajax({
+                    url: "/Token/Resend",
+                    method: "POST",
+                    data: $('form[data-ajax="true"]').serialize(),
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+                        $('#message').html('<div class="alert alert-success">Token enviado.</div>');
+                    },
+                    error: function (error) {
+                        if (error.status == 200) {
+                            $('#message').html('<div class="alert alert-success">Token enviado.</div>');
+                        } else {
+                            $('#message').html('<div class="alert alert-danger">Error al enviar token.</div>');
+                        }
+                       
+                    }
+                });
+            }
+        
+            $('form[data-ajax="true"]').submit(function (event) {
+                cleanError();
+                event.preventDefault(); // Prevent the default form submission
+
+                var form = $(this);
+                var url = '/Identity/Account/Login?handler=ValidateCredentials'; // Adjust this to the correct URL
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function (response) {
+                        console.log('validateCredentials:');
+                        console.log(response);
+                        if (response.success) {
+                            userId = response.userId;
+                            validateToken();
+                        }
+                        else {
+                            $(form).attr('action', '/Identity/Account/Login?handler=OnPost');
+                            $(form).off('submit').submit();
+                        }
+                    },
+                    error: function (error) {
+                        const { responseJSON } = error ?? {};
+                         const { message, accessFailedCount } = responseJSON ?? {};
+                        
+                        if (message) {
+                            showError(message);
+                            // if accessFailedCount is greater than 1, show captcha
+                            if (accessFailedCount >= 1 && isLoginRecaptchaEnabled) {
+                                grecaptcha.reset();
+                                $(".captcha-wrapper").show();
+                                //disable submit button
+                                $('button[type="submit"]').prop("disabled", true);
+                            }
+                        } else {
+                            $('#message').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
+                        }
+                    }
+                });
+            });
+
+            function getHolders() {
+                
+                const form = $('#account');
+                //const formData = new FormData(form);
+                var url = '/Identity/Account/Login?handler=Holders';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function (res) {
+                        if (res.error) {
+                            toastr.error(res.errorDescription);
+                            return;
+                        }
+                        $("#Input_IdHolder").append('<option value=""></option>');
+                        // Populate modal with available holders
+                        $.each(res.result, function (i, holder) {
+                            if (holder.nivel == 1) {
+                                $("#Input_IdHolder").append('<option class="nivel1" value="' + holder.id + '">' + holder.nombre + '</option>');
+                            }
+                            if (holder.nivel == 2) {
+                                $("#Input_IdHolder").append('<option class="nivel2" value="' + holder.id + '">' + holder.nombre + '</option>');
+                            }
+                        });
+
+                        $('#HoldersUserModal').modal('show');
+                        // Event when select holder
+                        $('#Input_IdHolder').on('change', function () {
+                            $('#HoldersUserModal').modal('hide');
+                            // Assign holder to input
+                            $("#Input_IdHolder").val($(this).val());
+                            $("form").unbind('submit').submit();
+                        });
+                    },
+                    error: function (ex) {
+                        toastr.error("Ocurri&#xF3; un error al obtener la informaci&#xF3;n.", ex);
+                    }
+                });
+            }
+            
+            function showError(message) {
+                const userName = document.querySelector("#Input_UserName").nextElementSibling;
+                userName.innerHTML = message;
+                userName.classList.remove('field-validation-valid');
+                userName.classList.add('field-validation-error');
+                
+            }
+            
+            function cleanError() {
+                const userName = document.querySelector("#Input_UserName").nextElementSibling;
+                userName.innerHTML = '';
+                userName.classList.add('field-validation-valid');
+                userName.classList.remove('field-validation-error');
+                
+            }
+        });
+    </script>
+
+    <script>
+        const LoginResources = {
+            UserRequired: "El campo usuario es requerido",
+            PasswordRequired: "La contrase&#xF1;a es incorrecta.",
+            HolderRequired: "Debe seleccionar un holder",
+            Select: "Seleccionar..."
+        };
+        let OrganizationId = 1;
+    </script>
+
+    <!--end::Page Scripts-->
+</body>
+<!--end::Body-->
+</html>

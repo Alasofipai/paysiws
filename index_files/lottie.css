@@ -1,0 +1,211 @@
+﻿#layout {
+  position: absolute;
+  width: 20%;
+  cursor: pointer;
+  height: auto;
+  top: 50%;
+  left: 48%;
+  /*margin-top: -118px;
+    margin-left: -150px;*/
+  transform: translate(-40%, -40%);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
+}
+
+#accounts .card:hover,
+#accounts .card.active,
+#terminals .card:hover,
+#terminals .card.active {
+  background-color: var(--primary);
+  cursor: pointer;
+  color: white;
+  /*add transition effect*/
+  transition: 0.3s;
+}
+
+#accounts,
+#terminals {
+  /*custom scrollbar*/
+  scrollbar-width: thin;
+  scrollbar-color: #16468D #fff;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  min-height: 40px;
+  max-height: 350px;
+}
+
+/* width */
+#accounts::-webkit-scrollbar,
+#terminals::-webkit-scrollbar {
+  width: 40px;
+  height: 10px;
+}
+
+/* Track */
+#accounts::-webkit-scrollbar-track,
+#terminals::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* handle thumb, set border radius, shadow and width */
+#accounts::-webkit-scrollbar-thumb,
+#terminals::-webkit-scrollbar-thumb {
+  background: #16468D;
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  width: 40px;
+}
+
+/* Handle thumb to circle */
+#accounts::-webkit-scrollbar-thumb:horizontal,
+#terminals::-webkit-scrollbar-thumb:horizontal {
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+#accounts::-webkit-scrollbar-thumb:hover,
+#terminals::-webkit-scrollbar-thumb:hover {
+  background: #16468D;
+}
+
+.tab-item {
+  /*add transition effect*/
+  transition: 0.3s;
+  display: none;
+}
+
+.search-box {
+  margin-bottom: 20px;
+}
+
+.input-group-append:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+#console {
+  width: 100%;
+  position: fixed;
+  background-color: black;
+  bottom: 0;
+  height: 50%;
+  z-index: 5;
+  display: none;
+}
+
+.console__close {
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  float: right;
+  margin-right: 10px;
+  height: 100%;
+  padding-top: 2px;
+}
+
+.console__clean {
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 10px;
+  height: 100%;
+  padding-top: 2px;
+}
+
+.console__open {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 12px;
+  cursor: pointer;
+  background-color: #16468D;
+  color: white;
+  width: 48px;
+}
+
+.console__open:hover {
+  opacity: 0.8;
+}
+
+.console__open:hover {
+  opacity: 0.8;
+}
+
+.console__header {
+  position: relative;
+  width: 100%;
+  background-color: #16468D;
+  height: 25px;
+}
+
+.console__content {
+  overflow-y: scroll;
+  width: 100%;
+  padding: 15px;
+  padding-bottom: 0;
+  height: 94%;
+  background-color: black;
+}
+
+.console__line {
+  color: white;
+  font-family: monospace;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.g-recaptcha {
+  margin: 0 auto;
+  width: 75%;
+}
+
+button:disabled {
+  cursor: not-allowed !important;
+  pointer-events: all !important;
+}
+
+.tip-content {
+  display: none;
+}
+
+.c-tip:hover+.tip-content {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  background-color: #fff;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-left: 10px;
+  border: 1px solid #EBEDF3;
+  z-index: 999999;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.datatable-row {
+  position: relative;
+}
+
+.user-info-tip {
+  position: absolute;
+  left: -21px;
+  top: 33%;
+}
+
+
+.input-group-prepend {
+  background-color: #fff!important;
+}
+.input-group-prepend select {
+  background-color: #fff!important;
+  border: 1px solid #ced4da;
+  border-right: none;
+  border-top-right-radius: 0%;
+  border-bottom-right-radius: 0%;
+}

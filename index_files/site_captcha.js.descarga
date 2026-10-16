@@ -1,0 +1,57 @@
+﻿$(document).on("click", '#account button[type="submit"]', function (e) {
+    e.preventDefault();
+    //get FailedAttempts from cookie
+    var failedAttempts = isLoginRecaptchaEnabled ? parseInt(getCookie("FailedAttempts")) : 0;
+    if (failedAttempts > 0) {
+      var response = grecaptcha.getResponse();
+      if (response.length === 0) {
+        return false;
+      } else {
+        //escape response
+        // response = encodeURIComponent(response);
+        fetch(
+          `${siteLocation}api/security/GetCaptchaResponse`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              response: response
+            })
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              $('form[data-ajax="true"]').submit();
+            } else {
+              enableButton();
+              grecaptcha.reset();
+              alert("Captcha is invalid. Please try again.");
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            throw error;
+          });
+      }
+    } else {
+      $('form[data-ajax="true"]').submit();
+    }
+  });
+  
+  function enableButton() {
+    $('#account button[type="submit"]').prop(
+      "disabled",
+      $('#account button[type="submit"]').prop("disabled") ? false : true
+    );
+  }
+  
+  function getCookie(name) {
+    const regex = new RegExp(`(^| )${name}=([^;]+)`);
+    const match = document.cookie.match(regex);
+    if (match) {
+      return match[2];
+    }
+  }

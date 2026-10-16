@@ -1,0 +1,26 @@
+﻿$(document).ajaxStart(function () {
+    $.blockUI({
+        message: $('#layout'),
+        baseZ: 999999,
+        css: {
+            position: 'center',
+            width: '50%',
+            cursor: 'pointer',
+            height: 'auto',
+            top: '50%',
+            left: '50%',
+            border: '0px solid #FFFFFF',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: '#FFFFFFFF'
+        }
+
+    });
+});
+
+$(document).ajaxStop(function () {
+    $.unblockUI();
+}).ajaxError(function () {
+    $.unblockUI();
+}).ajaxComplete(function () {
+    $.unblockUI();
+});
